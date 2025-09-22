@@ -331,13 +331,39 @@
         `Weight: ${weight}kg | Height: ${height}cm | Days: ${days} | Goal: ${goal}`;
     }
 
-    function generateWorkout(){
-      let split=document.getElementById("split").value;
-      let workoutPlan="";
-      if(split==="single"){workoutPlan=`...same as before...`;}
-      else{workoutPlan=`...same as before...`;}
-      document.getElementById("workout-plan").innerHTML=workoutPlan;
-    }
+function generateWorkout() {
+  let split = document.getElementById("split").value;
+  let workoutPlan = "";
+
+  if (split === "single") {
+    workoutPlan = `
+      <h4>Single Muscle per Day Split:</h4>
+      <ul>
+        <li><b>Day 1 - Chest:</b> Bench Press, Incline Dumbbell Press, Chest Flyes</li>
+        <li><b>Day 2 - Back:</b> Pull-ups, Bent Over Rows, Lat Pulldowns</li>
+        <li><b>Day 3 - Legs:</b> Squats, Lunges, Leg Press</li>
+        <li><b>Day 4 - Shoulders:</b> Military Press, Lateral Raises, Shrugs</li>
+        <li><b>Day 5 - Arms:</b> Bicep Curls, Tricep Pushdowns, Hammer Curls</li>
+        <li><b>Day 6 - Rest / Cardio</b></li>
+        <li><b>Day 7 - Rest</b></li>
+      </ul>`;
+  } else if (split === "double") {
+    workoutPlan = `
+      <h4>Two Muscles per Day Split:</h4>
+      <ul>
+        <li><b>Day 1 - Chest & Triceps:</b> Bench Press, Incline Press, Tricep Dips</li>
+        <li><b>Day 2 - Back & Biceps:</b> Pull-ups, Rows, Bicep Curls</li>
+        <li><b>Day 3 - Legs & Shoulders:</b> Squats, Lunges, Military Press</li>
+        <li><b>Day 4 - Rest / Cardio</b></li>
+        <li><b>Day 5 - Chest & Back:</b> Bench Press, Rows, Pull-ups</li>
+        <li><b>Day 6 - Legs & Arms:</b> Deadlifts, Leg Press, Bicep & Tricep Work</li>
+        <li><b>Day 7 - Rest</b></li>
+      </ul>`;
+  }
+
+  document.getElementById("workout-plan").innerHTML = workoutPlan;
+}
+
 
     function addFood(){
       let food=document.getElementById("food").value.toLowerCase();
@@ -370,4 +396,5 @@
     }
   </script>
 </body>
+
 </html>
