@@ -221,7 +221,6 @@
   <div id="tracker" class="page">
     <h2>Calorie & Macro Tracker</h2>
     <input type="text" id="food" placeholder="Enter Food Item">
-    <input type="number" id="quantity" placeholder="Quantity (grams)">
     <button onclick="addFood()">Add Food</button>
     <div id="food-list"></div>
     <h3>Total:</h3>
@@ -229,26 +228,6 @@
   </div>
 
   <script>
-    const foodDB = {
-      egg: {cal:155, pro:13, carb:1, fat:11},
-      banana: {cal:89, pro:1.1, carb:23, fat:0.3},
-      chicken: {cal:165, pro:31, carb:0, fat:3.6},
-      rice: {cal:130, pro:2.7, carb:28, fat:0.3},
-      paneer: {cal:265, pro:18, carb:8, fat:20},
-      fish: {cal:206, pro:22, carb:0, fat:12},
-      oats: {cal:389, pro:16.9, carb:66, fat:6.9},
-      apple: {cal:52, pro:0.3, carb:14, fat:0.2},
-      chapati: {cal:71, pro:3, carb:15, fat:1},
-      tofu: {cal:144, pro:16, carb:4, fat:8},
-      vegetables: {cal:50, pro:2, carb:10, fat:0.5},
-      oliveoil: {cal:884, pro:0, carb:0, fat:100},
-      milk: {cal:42, pro:3.4, carb:5, fat:1},
-      peanutbutter: {cal:588, pro:25, carb:20, fat:50},
-      yogurt: {cal:59, pro:10, carb:3.6, fat:0.4}
-    };
-
-    let totals = {cal:0, pro:0, carb:0, fat:0};
-
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => {
         p.classList.remove("active");
@@ -277,124 +256,71 @@
         p.style.display = "none";
         p.classList.remove("active");
       });
-      totals = {cal:0, pro:0, carb:0, fat:0};
-      document.getElementById("food-list").innerHTML="";
-      document.getElementById("totals").innerText="Calories: 0 | Protein: 0g | Carbs: 0g | Fats: 0g";
     }
 
     function generateDiet() {
-      let weight = parseInt(document.getElementById("weight").value);
-      let height = parseInt(document.getElementById("height").value);
-      let days = parseInt(document.getElementById("days").value);
-      let goal = document.getElementById("goal").value;
+      let weight=parseInt(document.getElementById("weight").value);
+      let height=parseInt(document.getElementById("height").value);
+      let days=parseInt(document.getElementById("days").value);
+      let goal=document.getElementById("goal").value;
       if(!weight||!height||!days){alert("Please fill all fields");return;}
-
       let calories = goal==="bulk"?weight*35:goal==="cut"?weight*22:weight*28;
-      let protein = weight*2; 
-      let fats = (calories*0.25)/9; 
-      let carbs = (calories-(protein*4 + fats*9))/4; 
-
-      // Meal split: Breakfast 30%, Lunch 40%, Dinner 30%
-      let breakfastCal = calories*0.3;
-      let lunchCal = calories*0.4;
-      let dinnerCal = calories*0.3;
-
-      // Breakfast: Oats, Eggs, Banana, Milk
-      let oatsQty = (breakfastCal*0.4)/foodDB.oats.cal*100;
-      let eggsQty = (breakfastCal*0.3)/foodDB.egg.cal*100;
-      let bananaQty = (breakfastCal*0.2)/foodDB.banana.cal*100;
-      let milkQty = (breakfastCal*0.1)/foodDB.milk.cal*100;
-
-      // Lunch: Chicken, Rice, Vegetables, Olive Oil
-      let chickenQty = (lunchCal*0.4)/foodDB.chicken.cal*100;
-      let riceQty = (lunchCal*0.3)/foodDB.rice.cal*100;
-      let vegQty = (lunchCal*0.2)/foodDB.vegetables.cal*100;
-      let oilQty = (lunchCal*0.1)/foodDB.oliveoil.cal*100;
-
-      // Dinner: Fish, Chapati, Tofu, Yogurt
-      let fishQty = (dinnerCal*0.35)/foodDB.fish.cal*100;
-      let chapatiQty = (dinnerCal*0.25)/foodDB.chapati.cal*100;
-      let tofuQty = (dinnerCal*0.25)/foodDB.tofu.cal*100;
-      let yogurtQty = (dinnerCal*0.15)/foodDB.yogurt.cal*100;
-
-      document.getElementById("diet-plan").innerHTML = `
-        <h3>Total Calories: ${Math.round(calories)} kcal</h3>
+      let protein=weight*2;
+      let fats=(calories*0.25)/9;
+      let carbs=(calories-(protein*4+fats*9))/4;
+      document.getElementById("diet-plan").innerHTML=`
+        <h3>Calories: ${Math.round(calories)} kcal</h3>
         <p>Protein: ${Math.round(protein)}g | Carbs: ${Math.round(carbs)}g | Fats: ${Math.round(fats)}g</p>
-        <h4>Meal Plan with Quantities:</h4>
+        <h4>3-Meal Plan Example:</h4>
         <ul>
-          <li><b>Breakfast:</b> Oats: ${Math.round(oatsQty)}g, Eggs: ${Math.round(eggsQty)}g, Banana: ${Math.round(bananaQty)}g, Milk: ${Math.round(milkQty)}g</li>
-          <li><b>Lunch:</b> Chicken: ${Math.round(chickenQty)}g, Rice: ${Math.round(riceQty)}g, Vegetables: ${Math.round(vegQty)}g, Olive Oil: ${Math.round(oilQty)}g</li>
-          <li><b>Dinner:</b> Fish: ${Math.round(fishQty)}g, Chapati: ${Math.round(chapatiQty)}g, Tofu: ${Math.round(tofuQty)}g, Yogurt: ${Math.round(yogurtQty)}g</li>
+          <li><b>Breakfast:</b> Oats (50g), 4 Boiled Eggs, Banana</li>
+          <li><b>Lunch:</b> 200g Chicken/Paneer, 150g Rice, Mixed Vegetables, Olive Oil</li>
+          <li><b>Dinner:</b> Fish/Tofu (150g), 2 Chapati, Salad</li>
         </ul>`;
-
       document.getElementById("profile-info").innerText=
         `Weight: ${weight}kg | Height: ${height}cm | Days: ${days} | Goal: ${goal}`;
     }
 
-function generateWorkout() {
-  let split = document.getElementById("split").value;
-  let workoutPlan = "";
+    function generateWorkout(){
+      let split=document.getElementById("split").value;
+      let workoutPlan="";
+      if(split==="single"){workoutPlan=`
+        <h3>Single Muscle Split</h3>
+        <ul>
+          <li>Mon: Chest - Bench Press 4x10, Incline DB Press 4x10, Cable Fly 3x12</li>
+          <li>Tue: Back - Deadlift 4x8, Pullups 4x10, Barbell Row 3x12</li>
+          <li>Wed: Legs - Squats 4x10, Leg Press 4x12, Lunges 3x12</li>
+          <li>Thu: Shoulders - Overhead Press 4x10, Lateral Raises 3x12, Shrugs 3x15</li>
+          <li>Fri: Arms - Bicep Curl 3x12, Tricep Dips 3x12, Skull Crusher 3x10</li>
+          <li>Sat: Abs + Cardio - Plank 3x60s, Crunches 3x20, Running 20min</li>
+          <li>Sun: Rest</li>
+        </ul>`;}
+      else{workoutPlan=`
+        <h3>Two Muscle Split</h3>
+        <ul>
+          <li>Mon: Chest + Triceps - Bench Press 4x10, DB Press 4x10, Tricep Pushdown 3x12</li>
+          <li>Tue: Back + Biceps - Deadlift 4x8, Pullups 4x10, Bicep Curl 3x12</li>
+          <li>Wed: Legs + Abs - Squats 4x10, Leg Press 4x12, Plank 3x60s</li>
+          <li>Thu: Shoulders + Triceps - Overhead Press 4x10, Lateral Raise 3x12, Dips 3x12</li>
+          <li>Fri: Back + Legs - Barbell Row 4x10, Lunges 3x12, Calf Raises 4x15</li>
+          <li>Sat: Arms + Abs - Bicep Curl 3x12, Skull Crusher 3x10, Crunches 3x20</li>
+          <li>Sun: Rest</li>
+        </ul>`;}
+      document.getElementById("workout-plan").innerHTML=workoutPlan;
+    }
 
-  if (split === "single") {
-    workoutPlan = `
-      <h4>Single Muscle per Day Split:</h4>
-      <ul>
-        <li><b>Day 1 - Chest:</b> Bench Press, Incline Dumbbell Press, Chest Flyes</li>
-        <li><b>Day 2 - Back:</b> Pull-ups, Bent Over Rows, Lat Pulldowns</li>
-        <li><b>Day 3 - Legs:</b> Squats, Lunges, Leg Press</li>
-        <li><b>Day 4 - Shoulders:</b> Military Press, Lateral Raises, Shrugs</li>
-        <li><b>Day 5 - Arms:</b> Bicep Curls, Tricep Pushdowns, Hammer Curls</li>
-        <li><b>Day 6 - Rest / Cardio</b></li>
-        <li><b>Day 7 - Rest</b></li>
-      </ul>`;
-  } else if (split === "double") {
-    workoutPlan = `
-      <h4>Two Muscles per Day Split:</h4>
-      <ul>
-        <li><b>Day 1 - Chest & Triceps:</b> Bench Press, Incline Press, Tricep Dips</li>
-        <li><b>Day 2 - Back & Biceps:</b> Pull-ups, Rows, Bicep Curls</li>
-        <li><b>Day 3 - Legs & Shoulders:</b> Squats, Lunges, Military Press</li>
-        <li><b>Day 4 - Rest / Cardio</b></li>
-        <li><b>Day 5 - Chest & Back:</b> Bench Press, Rows, Pull-ups</li>
-        <li><b>Day 6 - Legs & Arms:</b> Deadlifts, Leg Press, Bicep & Tricep Work</li>
-        <li><b>Day 7 - Rest</b></li>
-      </ul>`;
-  }
-
-  document.getElementById("workout-plan").innerHTML = workoutPlan;
-}
-
+    const foodDB={egg:{cal:70,pro:6,carb:1,fat:5},banana:{cal:105,pro:1,carb:27,fat:0},chicken:{cal:165,pro:31,carb:0,fat:3},rice:{cal:130,pro:2,carb:28,fat:0},paneer:{cal:265,pro:18,carb:8,fat:20},fish:{cal:200,pro:22,carb:0,fat:12},oats:{cal:150,pro:5,carb:27,fat:3},apple:{cal:95,pro:0,carb:25,fat:0}};
+    let totals={cal:0,pro:0,carb:0,fat:0};
 
     function addFood(){
       let food=document.getElementById("food").value.toLowerCase();
-      let quantity=parseFloat(document.getElementById("quantity").value);
-      if(!foodDB[food]){
-        alert("Food not in database. Available: " + Object.keys(foodDB).join(", "));
-        return;
-      }
-      if(!quantity || quantity<=0){ alert("Enter a valid quantity in grams"); return; }
-
+      if(!foodDB[food]){alert("Food not in database. Try: egg, banana, chicken, rice, paneer, fish, oats, apple");return;}
       let f=foodDB[food];
-      let factor = quantity / 100;
-      let cal = (f.cal*factor).toFixed(1);
-      let pro = (f.pro*factor).toFixed(1);
-      let carb = (f.carb*factor).toFixed(1);
-      let fat = (f.fat*factor).toFixed(1);
-
-      totals.cal+=parseFloat(cal);
-      totals.pro+=parseFloat(pro);
-      totals.carb+=parseFloat(carb);
-      totals.fat+=parseFloat(fat);
-
-      document.getElementById("food-list").innerHTML+=
-        `<p>${food} (${quantity}g) - ${cal} kcal | P: ${pro}g C: ${carb}g F: ${fat}g</p>`;
-      document.getElementById("totals").innerText=
-        `Calories: ${totals.cal.toFixed(1)} | Protein: ${totals.pro.toFixed(1)}g | Carbs: ${totals.carb.toFixed(1)}g | Fats: ${totals.fat.toFixed(1)}g`;
-
+      totals.cal+=f.cal; totals.pro+=f.pro; totals.carb+=f.carb; totals.fat+=f.fat;
+      document.getElementById("food-list").innerHTML+=`<p>${food} - ${f.cal} kcal | P: ${f.pro}g C: ${f.carb}g F: ${f.fat}g</p>`;
+      document.getElementById("totals").innerText=`Calories: ${totals.cal} | Protein: ${totals.pro}g | Carbs: ${totals.carb}g | Fats: ${totals.fat}g`;
       document.getElementById("food").value="";
-      document.getElementById("quantity").value="";
     }
   </script>
 </body>
-
 </html>
